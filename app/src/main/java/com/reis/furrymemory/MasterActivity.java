@@ -6,15 +6,20 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
 public class MasterActivity extends AppCompatActivity {
@@ -28,17 +33,21 @@ public class MasterActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_title1);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_title2);
+        DividerDrawerItem divider = new DividerDrawerItem();
+
+        AccountHeader accountHeader = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.header) // 480 x 320 image
+                .withSelectionListEnabledForSingleProfile(false)
+                .build();
+
         DrawerBuilder builder = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .addDrawerItems(
-                        // .withIcon(R.drawable.menu_icon) // for an icon
-                        new SecondaryDrawerItem().withName(R.string.drawer_title1).withIdentifier(1),
-                        new SecondaryDrawerItem().withName(R.string.drawer_title2).withIdentifier(2),
-                        new SecondaryDrawerItem().withName(R.string.drawer_title3).withIdentifier(3),
-                        new SecondaryDrawerItem().withName(R.string.drawer_title4).withIdentifier(4),
-                        new SecondaryDrawerItem().withName(R.string.drawer_title5).withIdentifier(5)
-                )
+                .withAccountHeader(accountHeader)
+                .addDrawerItems(item1, divider, item2)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
