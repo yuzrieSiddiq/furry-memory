@@ -1,6 +1,9 @@
 package com.reis.furrymemory;
 
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +27,10 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
+import com.reis.furrymemory.MasterFragments.MarkersFragment;
+import com.reis.furrymemory.MasterFragments.OverviewFragment;
+import com.reis.furrymemory.MasterFragments.VitalSignsFragment;
+import com.reis.furrymemory.SubMenuFragments.ProfileFragment;
 
 public class MasterActivity extends AppCompatActivity {
 
@@ -75,6 +82,7 @@ public class MasterActivity extends AppCompatActivity {
                             String toolbarTitle = ((Nameable) drawerItem).getName().getText(getApplicationContext());
                             toolbar.setTitle(toolbarTitle);
 
+                            switchFragment((int) drawerItem.getIdentifier());
                             Snackbar.make(view, "On View: " + toolbarTitle, Snackbar.LENGTH_LONG).show();
                         }
 
@@ -84,5 +92,33 @@ public class MasterActivity extends AppCompatActivity {
                 .withSelectedItem(-1);
 
         Drawer drawer = builder.build();
+    }
+
+    public void switchFragment(int drawerItemId) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        Fragment fragment = new Fragment();
+
+        switch (drawerItemId)
+        {
+            case 1:
+                fragment = new OverviewFragment();
+                break;
+            case 2:
+                fragment = new MarkersFragment();
+                break;
+            case 3:
+                fragment = new VitalSignsFragment();
+                break;
+            case 4:
+                fragment = new ProfileFragment();
+                break;
+            case 5:
+                // TODO: logout via Utility class
+                break;
+        }
+
+        transaction.replace(R.id.flFragments, fragment);
+        transaction.commit();
     }
 }
