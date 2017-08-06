@@ -9,11 +9,14 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.StringHolder;
+import com.mikepenz.materialdrawer.icons.MaterialDrawerFont;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
@@ -33,9 +36,22 @@ public class MasterActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.drawer_title1);
-        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_title2);
-        DividerDrawerItem divider = new DividerDrawerItem();
+        PrimaryDrawerItem mainNav = new PrimaryDrawerItem().withName(R.string.drawer_main_nav).withSelectable(false);
+        PrimaryDrawerItem subNav  = new PrimaryDrawerItem().withName(R.string.drawer_sub_nav).withSelectable(false);
+        DividerDrawerItem divider = new DividerDrawerItem().withSelectable(false);
+
+        IconicsDrawable overviewIcon    = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_folder_o);
+        IconicsDrawable markersIcon     = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_stethoscope);
+        IconicsDrawable vitalsignsIcon  = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_user_md);
+        SecondaryDrawerItem overview    = new SecondaryDrawerItem().withIdentifier(1).withName(R.string.drawer_overview).withIcon(overviewIcon);
+        SecondaryDrawerItem markers     = new SecondaryDrawerItem().withIdentifier(2).withName(R.string.drawer_markers).withIcon(markersIcon);
+        SecondaryDrawerItem vitalsigns  = new SecondaryDrawerItem().withIdentifier(3).withName(R.string.drawer_vitalsigns).withIcon(vitalsignsIcon);
+
+        IconicsDrawable profileIcon = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_user);
+        IconicsDrawable logoutIcon  = new IconicsDrawable(this).icon(FontAwesome.Icon.faw_power_off);
+        SecondaryDrawerItem profile = new SecondaryDrawerItem().withIdentifier(4).withName(R.string.drawer_profile).withIcon(profileIcon);
+        SecondaryDrawerItem logout  = new SecondaryDrawerItem().withIdentifier(5).withName(R.string.drawer_logout).withIcon(logoutIcon);
+
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -47,7 +63,10 @@ public class MasterActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withToolbar(toolbar)
                 .withAccountHeader(accountHeader)
-                .addDrawerItems(item1, divider, item2)
+                .withTranslucentStatusBar(false)
+                .addDrawerItems(
+                        mainNav, overview, markers, vitalsigns, divider,
+                        subNav, profile, logout)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -61,7 +80,8 @@ public class MasterActivity extends AppCompatActivity {
 
                         return false;
                     }
-                });
+                })
+                .withSelectedItem(-1);
 
         Drawer drawer = builder.build();
     }
