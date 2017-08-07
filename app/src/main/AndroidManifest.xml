@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MasterActivity"></activity>
+        <activity android:name=".MasterFragments.MarkersActivityShow"></activity>
     </application>
 
 </manifest>
